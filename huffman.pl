@@ -1,6 +1,6 @@
 % count occurrences of characters
 % 
-%sortedoccurencelist([FI|RI], O, O2]):-
+% sortedoccurencelist([FI|RI], O, O2]):-
 %  O = [[C, F]|R],
 %  (
 %    member(FI, O), F:-occurences(C, O2).
@@ -19,11 +19,9 @@ occurences([X1|T], [X], Z):-
     X1 \= X, occurences(T, [X], Z).
 
 % OCCURENCELIST
-% makes list of number of occurences per character in string
+% makes list of number of occurences per character in string. first parameter is the string, second is the data structure passed to the function as input, last is the output
 % occurencelist("test", [], X).
 % X = [[116, 2], [101, 1], [115, 1]] 
-occurencelist([], [], []).
-
 occurencelist([], L, L).
 
 occurencelist([X|T], OL, NL):-
@@ -35,7 +33,7 @@ occurencelist([X|T], OL, NL):-
     append(OL, [[X, E]], HL),
     occurencelist(T, HL, NL).
     
-
+% COMPLEXMEMBER
 % true if E is member of list of type [[A, 2], [B, 1], [C, 1]]
 complexmember(E, [[A,B]|R]):- 
     E = A;
