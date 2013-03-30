@@ -1,7 +1,8 @@
 huffmanize(T, X) :- 
     occurrencelist(T, [], OL),
     sortswapped(OL, SOL),
-    occurrencelist2tree(SOL, X).
+    occurrencelist2tree(SOL, X),
+    write(X).
 
 % OCCURENCES
 % stores number of occurences of second parameter in first parameter in third parameter.
@@ -70,60 +71,22 @@ occurrencelist2tree([FLA,FLB|FLR], T):-
 
 
 % Depth First Search
+% dfs([[[[[[105,1],[109,1]],2],[[[101,2],[[[103,1],[104,1]],2]],4]],6]], 104, [], L).
+% L = [5, 1, 1, 1]
+% 5 at the beginning means extracted the node, did not move in any direction. Is there one list too much around everything?
 dfs([T, X], T, L, L).
-
+% extract node (somehow tree seems to be in a list)
 dfs(T, G, OL, NL):-
-    [[X|R]] = T,
-    append(OL, [5], Z),
-    dfs(X, G, Z, NL),
-    write(T),
-    write('\neingepackt\n'),
-    write(OL),
-    write('\n'),
-    write(X),
-    write('\n'),
-    write('\n').
-
+    [X] = T,
+    append(OL, [5], Z), % 5 means that we did not go in any direction but just extracted the (root) node. The tree seems to be in a list ...
+    dfs(X, G, Z, NL).
+% go right -> append 1
 dfs(T, G, OL, NL):-
-    [X, Y|R] = T,
+    [[X,Y], N] = T,
     append(OL, [1], Z),
-    dfs(Y, G, Z, NL),
-    write(T),
-    write('\nrechts\n'),
-    write(OL),
-    write('\n'),
-    write(Y),
-    write('\n'),
-    write('\n').
-
+    dfs(Y, G, Z, NL).
+% go left -> append 0
 dfs(T, G, OL, NL):-
-    [[X], M] = T,    
-    append(OL, [4], Z),
-    dfs(X, G, Z, NL),
-    write(T),
-    write('\nanders eingepackt\n'),
-    write(OL),
-    write('\n'),
-    write(X),
-    write('\n'),
-    write('\n').
-
-dfs(T, G, OL, NL):-
-    [X|R] = T,
+    [[X,Y], N] = T,
     append(OL, [0], Z),
-    dfs(X, G, Z, NL),
-    write(T),
-    write('\nlinks\n'),
-    write(OL),
-    write('\n'),
-    write(X),
-    write('\n'),
-    write('\n').
-
-%[[[[121, 1], [[[101, 1], [104, 1]], 2]], 3]]
-%  [[121, 1], [[[101, 1], [104, 1]], 2]]
-%             [[[101, 1], [104, 1]], 2]
-%              [[101, 1], [104, 1]]
-             
-             
-
+    dfs(X, G, Z, NL).
