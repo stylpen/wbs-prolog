@@ -39,6 +39,7 @@ complexmember(E, [[A,B]|R]):-
 
 % SORTSWAPPED
 % swaps, sorts, swaps back
+% does this: [[f, 3], [x, 4], [r, 2]] => [[r, 2], [f, 3], [x, 4]]
 sortswapped([], []).
 
 sortswapped(I, O):-
@@ -47,31 +48,32 @@ sortswapped(I, O):-
     swapelements(S, O).
 
 % SWAPELEMENTS
-% does this: [[f,3], [x, 4], [r, 2]] => [[r, 2], [f,3], [x, 4]]
+% swaps
+% does this: [[f, 3], [x, 4], [r, 2]] => [[3, f], [4, x], [2, r]] 
 swapelements([], []).
 
-swapelements([[F,S]], [[S,F]]).
+swapelements([[F, S]], [[S, F]]).
 
-swapelements([[F,S]|R], [[S,F]|R2]):-
+swapelements([[F, S]|R], [[S, F]|R2]):-
     swapelements(R, R2).
 
 % TREE
 % takes the leftmost two items and combines them into one node, afterwards
 % sorts the list
-tree([[X,NX],[Y,NY]|R], R2):-
+tree([[X, NX],[Y, NY]|R], R2):-
     N is NX + NY, 
-    sortswapped([[[[X, NX], [Y,NY]], N]|R], R2).
+    sortswapped([[[[X, NX], [Y, NY]], N]|R], R2).
 
 % FREQLIST2TREE
 % takes an occurrencelist and turns it into a tree
 occurrencelist2tree([FL], [FL]).
-occurrencelist2tree([FLA,FLB|FLR], T):-
+occurrencelist2tree([FLA, FLB|FLR], T):-
     tree([FLA, FLB|FLR], N),
     occurrencelist2tree(N, T).
 
 
 % Depth First Search
-% dfs([[[[[[105,1],[109,1]],2],[[[101,2],[[[103,1],[104,1]],2]],4]],6]], 104, [], L).
+% dfs([[[[[[105, 1], [109, 1]], 2], [[[101, 2], [[[103, 1], [104, 1]], 2]], 4]], 6]], 104, [], L).
 % L = [5, 1, 1, 1]
 % 5 at the beginning means extracted the node, did not move in any direction. Is there one list too much around everything?
 dfs([T, X], T, L, L).
@@ -82,11 +84,11 @@ dfs(T, G, OL, NL):-
     dfs(X, G, Z, NL).
 % go right -> append 1
 dfs(T, G, OL, NL):-
-    [[X,Y], N] = T,
+    [[X, Y], N] = T,
     append(OL, [1], Z),
     dfs(Y, G, Z, NL).
 % go left -> append 0
 dfs(T, G, OL, NL):-
-    [[X,Y], N] = T,
+    [[X, Y], N] = T,
     append(OL, [0], Z),
     dfs(X, G, Z, NL).
