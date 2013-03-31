@@ -1,8 +1,21 @@
-huffmanize(T, X) :- 
+% HUFFMANIZE
+% takes text and builds up huffman tree and encodes text using that tree
+% huffmanize("test", X, Y).
+% Tree is:
+% [[[[116,2],[[[101,1],[115,1]],2]],4]]
+% Encoded text is:
+% [5,0,5,1,0,5,1,1,5,0]
+% X = [[[[116, 2], [[[101, 1], [115, 1]], 2]], 4]],
+% Y = [5, 0, 5, 1, 0, 5, 1, 1, 5|...] .
+huffmanize(T, X, Y) :- 
     occurrencelist(T, [], OL),
     sortswapped(OL, SOL),
     occurrencelist2tree(SOL, X),
-    write(X).
+    write('Tree is:\n'),
+    write(X),
+    write('\nEncoded text is:\n'),
+    encode(X, T, [], Y),
+    write(Y).
 
 % OCCURENCES
 % stores number of occurences of second parameter in first parameter in third parameter.
@@ -92,3 +105,14 @@ dfs(T, G, OL, NL):-
     [[X, Y], N] = T,
     append(OL, [0], Z),
     dfs(X, G, Z, NL).
+    
+    
+% ENCODE
+% takes a tree, a text, an input list and generates an output list
+% encode([[[[116, 2], [[[101, 1], [115, 1]], 2]], 4]], "test", [], X).
+% X = [5, 0, 5, 1, 0, 5, 1, 1, 5, 0]
+encode(T, [], L, L).
+
+encode(T, [C|R], OL, NL):-
+    dfs(T, C, OL, TL),
+    encode(T, R, TL, NL).
