@@ -17,21 +17,21 @@ huffmanize(T, X, Y) :-
     encode(X, T, [], Y),
     write(Y).
 
-% OCCURENCES
-% stores number of occurences of second parameter in first parameter in third parameter.
-% occurences("test", "t", X).
+% occurrencES
+% stores number of occurrences of second parameter in first parameter in third parameter.
+% occurrences("test", "t", X).
 % X = 2 
-occurences([], X, 0).
+occurrences([], X, 0).
 
-occurences([X|T], [X], Y):-
-    occurences(T, [X], Z), Y is 1 + Z.
+occurrences([X|T], [X], Y):-
+    occurrences(T, [X], Z), Y is 1 + Z.
     
-occurences([X1|T], [X], Z):-
-    X1 \= X, occurences(T, [X], Z).
+occurrences([X1|T], [X], Z):-
+    X1 \= X, occurrences(T, [X], Z).
 
 % OCCURRENCELIST
-% makes list of number of occurences per character in string. first parameter is the string, second is the data structure passed to the function as input, last is the output
-% occurencelist("test", [], X).
+% makes list of number of occurrences per character in string. first parameter is the string, second is the data structure passed to the function as input, last is the output
+% occurrencelist("test", [], X).
 % X = [[116, 2], [101, 1], [115, 1]] 
 occurrencelist([], L, L).
 
@@ -40,7 +40,7 @@ occurrencelist([X|T], OL, NL):-
     occurrencelist(T, OL, NL).
 
 occurrencelist([X|T], OL, NL):-
-    occurences([X|T], [X], E),
+    occurrences([X|T], [X], E),
     append(OL, [[X, E]], HL),
     occurrencelist(T, HL, NL).
     
