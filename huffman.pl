@@ -86,15 +86,9 @@ occurrencelist2tree([FLA, FLB|FLR], T):-
 
 
 % Depth First Search
-% dfs([[[[[[105, 1], [109, 1]], 2], [[[101, 2], [[[103, 1], [104, 1]], 2]], 4]], 6]], 104, [], L).
-% L = [5, 1, 1, 1]
-% 5 at the beginning means extracted the node, did not move in any direction. Is there one list too much around everything?
+% dfs([[[[[105, 1], [109, 1]], 2], [[[101, 2], [[[103, 1], [104, 1]], 2]], 4]], 6], 104, [], L).
+% L = [1, 1, 1]
 dfs([T, X], T, L, L).
-% extract node (somehow tree seems to be in a list)
-dfs(T, G, OL, NL):-
-    [X] = T,
-    append(OL, [5], Z), % 5 means that we did not go in any direction but just extracted the (root) node. The tree seems to be in a list ...
-    dfs(X, G, Z, NL).
 % go right -> append 1
 dfs(T, G, OL, NL):-
     [[X, Y], N] = T,
@@ -110,9 +104,9 @@ dfs(T, G, OL, NL):-
 % ENCODE
 % takes a tree, a text, an input list and generates an output list
 % encode([[[[116, 2], [[[101, 1], [115, 1]], 2]], 4]], "test", [], X).
-% X = [5, 0, 5, 1, 0, 5, 1, 1, 5, 0]
+% X = [0, 1, 0, 1, 1, 0]
 encode(T, [], L, L).
 
-encode(T, [C|R], OL, NL):-
+encode([T], [C|R], OL, NL):-
     dfs(T, C, OL, TL),
-    encode(T, R, TL, NL).
+    encode([T], R, TL, NL).
